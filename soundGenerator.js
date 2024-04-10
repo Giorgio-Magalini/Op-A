@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
   function loadTone(event) {
     if (!toneLoaded) {
       const script = document.createElement('script');
-      // script.src = 'https://cdn.jsdelivr.net/npm/tone'; 
-      script.src = 'libraries/tone.js'; 
+      script.src = 'https://cdn.jsdelivr.net/npm/tone'; 
+      // script.src = 'libraries/tone.js'; 
       script.onload = initializeTone;
       document.head.appendChild(script);
 
