@@ -1,20 +1,49 @@
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+function startAudioContext() {
 
-if (audioContext.state === "suspended") {
-  audioContext.resume();
-}
+  const audioContext = new (AudioContext || webkitAudioContext)();
 
-Tone.setContext(audioContext);
-
-document.addEventListener("mousemove", function () {
-  audioContext.resume().then(() => {
-    console.log("AudioContext resumed successfully");
-  });
+  Tone.setContext(audioContext);
 
   Tone.start();
+}
 
-  document.removeEventListener("mousemove", arguments.callee);
+window.onload = function() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "block";
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+  let toneLoaded = false;
+
+  function loadTone(event) {
+    if (!toneLoaded) {
+      const script = document.createElement('script');
+      // script.src = 'https://cdn.jsdelivr.net/npm/tone'; 
+      script.src = 'libraries/tone.js'; 
+      script.onload = initializeTone;
+      document.head.appendChild(script);
+
+      document.getElementById("myModal").style.display = "none";
+      
+      toneLoaded = true;
+
+      event.target.removeEventListener(event.type, event.callee);
+    }
+  }
+
+  document.addEventListener("click", loadTone);
+  document.addEventListener("touchstart", loadTone);
 });
+
+
+
+function initializeTone() {
+  startAudioContext();
+  initToneSynth();
+  initEffects();
+  setConnections();
+}
+
 
 var reverb = 0.5;
 var delay = 0.5;
@@ -79,15 +108,135 @@ const synthTypes = [
 
 var synthType = synthTypes[0];
 
-bus = new Tone.Gain();
+const effects = {
+  reverb: {
+    id: "reverb",
+    effect: null,
+    output: null,
+    value: 0.5,
+  },
+  delay: {
+    id: "delay",
+    effect: null,
+    output: null,
+    value: 0.5,
+  },
+  phaser: {
+    id: "phaser",
+    effect: null,
+    output: null,
+    value: 0.5,
+  },
+  chorus: {
+    id: "chorus",
+    effect: null,
+    output: null,
+    value: 0.5,
+  },
+};
 
-polySynth = new Tone.PolySynth();
 
-polySynth.set({
-  maxPolyphony: 20,
-});
+function initEffects () {
+  effects["reverb"].effect = new Tone.Reverb({
+    decay: 5,
+    preDelay: 0,
+    wet: 1,
+  });
+  
+  effects["delay"].effect = new Tone.FeedbackDelay({
+    delayTime: 0.7,
+    feedback: 0.5,
+    wet: 1,
+  });
 
-setSynthSettings(synthType.settings);
+  effects["phaser"].effect = new Tone.Phaser({
+    frequency: 20,
+    octaves: 0.9,
+    baseFrequency: 1000,
+    wet: 1,
+  });
+
+  effects["chorus"].effect = new Tone.Chorus({
+    frequency: 4,
+    delayTime: 2.5,
+    depth: 0.5,
+    wet: 1,
+  }).start();
+
+
+  for (const effectKey in effects) {
+    if (effects.hasOwnProperty(effectKey)) {
+      const effect = effects[effectKey];
+      effect.output = new Tone.Gain();
+    }
+  }
+  
+
+  configureEffectSliders(0, 1);
+
+  initEffectButtons();
+
+}
+
+// function to scale a value from one range to another
+function scaleValue(value, oldMin, oldMax, newMin, newMax) {
+  var oldValueRange = oldMax - oldMin;
+  var newValueRange = newMax - newMin;
+  var scaledValue = ((value - oldMin) * newValueRange) / oldValueRange + newMin;
+  return scaledValue;
+}
+
+
+function configureEffectSliders(min, max) {
+  document.querySelectorAll(".slider").forEach((slider) => {
+    slider.addEventListener("input", function () {
+      effects[slider.id].value = scaleValue(this.value, 0, 100, min, max);
+      updateEffects();
+    });
+  });
+}
+
+function initEffectButtons() {
+  // Add an event listener for all the buttons called "effectButton"
+  Object.values(effects).forEach(function (effect) {
+    var effectButton = document.getElementById(effect.id);
+
+    effectButton.addEventListener("click", function () {
+      const isActive = effectButton.classList.contains("active");
+
+      if (isActive) {
+        effectButton.classList.remove("active");
+        deactivateEffect(effect);
+      } else {
+        effectButton.classList.add("active");
+        activateEffect(effect);
+      }
+    });
+  });
+}
+
+
+function initToneSynth(){
+  polySynth = new Tone.PolySynth();
+  polySynth.set({
+    maxPolyphony: 20,
+  });
+  if(synthType.settings){
+    setSynthSettings(synthType.settings);
+  }
+}
+
+function setConnections() {
+  bus = new Tone.Gain();
+  bus.toDestination();
+  polySynth.toDestination();
+  Object.values(effects).forEach((effect) => {
+    effect.effect.disconnect();
+    polySynth.connect(effect.effect);
+    effect.effect.connect(effect.output);
+  });
+}
+
 
 function setSynthEnvelope(envelope) {
   polySynth.set({
@@ -130,17 +279,10 @@ function setRandomSynthSettings(randOsc) {
 }
 
 function setSynthSettings(settings) {
-  const oscillator = settings.oscillator;
-  const envelope = settings.envelope;
-  const volume = settings.volume;
-  setSynthOscillator(oscillator);
-  setSynthEnvelope(envelope);
-  polySynth.volume.value = volume;
+  setSynthOscillator(settings.oscillator);
+  setSynthEnvelope(settings.envelope);
+  polySynth.volume.value = settings.volume;
 }
-
-bus.toDestination();
-
-polySynth.toDestination();
 
 //function for generating sound from a given note with a given velocity with tone js
 function generateSound(note, velocity) {
