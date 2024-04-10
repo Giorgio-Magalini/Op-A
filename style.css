@@ -1,0 +1,663 @@
+:root {
+  --font: 'creato_display';
+  --fontSize: 20px;
+  --width: 100px;
+  --height: 100px;
+  --carouselRadius: 100px;
+  --carousel-fontSize: 50px;
+  --color-base: rgb(217, 220, 229);
+  --color-base-brighter: rgb(220, 223, 232);
+  --color-base-darker: rgb(207, 210, 219);
+  --color-background: rgb(200, 201, 208);
+  --title-text-color: rgb(130, 130, 130);
+  --text-color: rgb(107, 110, 119);
+  --text-color-slides: rgb(255, 255, 255);
+  --color-leds: rgb(120, 120, 255);
+  --color-leds-screen: rgb(200, 200, 255);
+  --color-leds-screen-transparent: rgba(200, 200, 255, 0.5);
+  --color-leds-screen-moreTransparent: rgba(200, 200, 255, 0.25);
+}
+
+@font-face {
+  font-family: 'creato_display';
+  src: url('fonts/creato_display/CreatoDisplay-Regular.otf') format('opentype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+*:focus {
+  outline: none;
+}
+
+body{
+  font-family: var(--font);
+  font-size: var(--fontSize);
+  background-color: var(--color-background);
+  color: var(--text-color);
+  display: flex;
+  user-select: none;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.title{
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 30px;
+  height: 100px;
+  width: 1968px;
+  align-items: flex-end;
+  position: fixed;
+  top: 0;
+}
+
+#OP-A {
+  width: 200px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+
+.credits {
+  font-size: 20px;
+  color: var(--title-text-color);
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.opAGrid {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto;
+  /* grid-template-areas:"midiQuantizer  effects       "
+                        "arp            arp           "; */
+  grid-template-areas:  "midiQuantizer   arp            "
+                        "effects         arp            ";
+
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 40px;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-content: center;
+}
+
+.containerArp,
+.containerMidiQuantizer,
+.midiSelector,
+.containerEffects {
+  display: flex;
+
+  background: var(--color-base);
+  border: 2px solid #c4c4c2;
+
+  box-shadow: 18px 18px 18px rgb(0 0 0 / 30%),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 35px;
+}
+
+.containerMidiQuantizer{
+  flex-direction: column;
+}
+
+.midiSelector {
+  flex-direction: column;
+  grid-area: midiSettings;
+  gap: 10px;
+  width: 1968px;
+  /* height: 60px; */
+  flex-wrap: wrap;
+  /* padding: 15px 120px; */
+  align-content: space-between;
+  align-items: baseline;
+  position: fixed;
+  bottom: 0;
+  /* color: #fff; */
+  /* padding: 10px; */
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+  transform: translateY(0);
+  border-radius: 20px 20px 0px 0px;
+  position: fixed;
+}
+
+.midiSelector.active {
+  transform: translateY(100%);
+}
+
+#toggleMidiMenu {
+  border: none;
+  padding: 10px;
+  position: absolute;
+  bottom: 27px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+.containerEffects {
+  grid-area: effects;
+  width: 708px;
+  height: 470px;
+  flex-direction: column;
+  padding: 35px 0px;
+}
+
+.containerMidiQuantizer {
+  grid-area: midiQuantizer;
+  width: 708px;
+  height: 470px;
+  gap: 6%;
+}
+
+.containerArp {
+  grid-area: arp;
+  width: 1220px;
+  height: 980px;
+}
+
+.background {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #0f0e0f;
+  border-radius: 6px;
+  flex-direction: column;
+}
+
+.grid {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: 2.6fr 2fr;
+  grid-template-rows: 1.5fr 2fr;
+  grid-template-areas:
+    "screen controls"
+    "lowerblock lowerblock";
+}
+
+.innerBlock {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background: var(--color-base);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 2px 2px 2px #d5d5d5;
+  z-index: 0;
+}
+
+#controlsBlock {
+  grid-area: controls;
+  gap: 40px;
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  background-color: rgb(0, 0, 0);
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  border-color: #ffffff;
+}
+
+#matterScreen {
+  grid-area: screen;
+}
+
+.gloss {
+  position: absolute;
+  width: 100%;
+  opacity: 0.35;
+}
+
+#canvas_poly,
+#bkgndModeCanvas,
+#frgndModeCanvas,
+#bkgndKeyCanvas,
+#frgndKeyCanvas {
+  position: absolute;
+}
+
+#lowerblock {
+  grid-area: lowerblock;
+}
+
+/* ------------------------------------------------------------------*/
+/*OPTIONAL -> WE CAN REMOVE IT */
+/*.speaker-block {
+  position: absolute;
+  display: flex;
+  width: 220px;
+  height: 220px;
+  margin: 12px 20px 20px 12px;
+  background: linear-gradient(
+    120deg,
+    rgba(244, 230, 230, 0) 70.52%,
+    rgba(205, 210, 220, 0) 96.3%
+  );
+  border-radius: 4px;
+}
+
+.speaker {
+  background-image: url("https://pizzabreakfast.co/project-assets/web-op-1/speaker.svg");
+  width: 109px;
+  height: 109px;
+  background-size: 109px;
+}*/
+
+/* ------------------------------------------------------------------*/
+
+
+.keyboard-block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 89%;
+  width: 95%;
+  border-radius: 6px;
+  margin: 20px;
+  background: var(--color-base);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 8px 8px 10px rgba(0, 0, 0, 0.1),
+    inset -8px -8px 10px rgba(255, 255, 255, 0.5);
+}
+
+.synthControls {
+  height: 25%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.notes-block {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.notes-white {
+  position: relative;
+  height: 60%;
+  width: 100%;
+  display: flex;
+  padding: 0px 30px;
+}
+
+/* single white button */
+.white-key {
+  background: var(--color-base-brighter);
+  margin: 10px;
+  cursor: pointer;
+  height: 190px;
+  width: 65px;
+  border-radius: 45px;
+  border: none;
+  box-shadow: 8px 8px 8px rgb(0 0 0 / 30%), -8px -8px 8px rgb(255 255 255 / 70%);
+  transition: background-color 0.3s;
+}
+
+/* animations for white buttons */
+/* .white-key:hover{
+  background: linear-gradient(
+    120deg,
+    rgba(201, 190, 190, 0.964) 70.52%,
+    rgba(104, 106, 111, 0.778) 96.3%
+  );
+} */
+
+.white-key.active {
+  background: var(--color-base-darker);
+  /* box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.3),
+    -8px -8px 8px rgba(255, 255, 255, 0.7); */
+  transform: translateY(4px);
+}
+
+/* block of black notes */
+.notes-black {
+  height: 25%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-areas: "Cs Ds . Fs Gs As . Cs1 Ds1 . Fs1";
+  padding: 0px 74px;
+  flex-direction: column;
+}
+
+/* single button*/
+.black-key {
+  background: linear-gradient(
+    120deg,
+    rgba(20, 20, 20, 1) 70.52%,
+    rgba(0, 0, 0, 1) 96.3%
+  );
+  cursor: pointer;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  padding: 0%;
+  /* box-sizing: content-box; */
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.3),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.2),
+    -8px -8px 8px rgba(255, 255, 255, 0.7);
+  border: none;
+  transition: background-color 0.3s;
+}
+
+/* animations for the black buttons*/
+/* .black-key:hover{
+  background: linear-gradient(
+    120deg,
+    rgba(25, 24, 24, 0.964) 70.52%,
+    rgba(0, 0, 0, 0.982) 96.3%
+  );
+} */
+
+.black-key.active {
+  background: linear-gradient(
+    120deg,
+    rgba(10, 10, 10, 0.964) 70.52%,
+    rgba(0, 0, 0, 0.982) 96.3%
+  );
+  transform: translateY(4px);
+}
+
+#Cs {
+  grid-area: Cs;
+}
+
+#Ds {
+  grid-area: Ds;
+}
+
+#Fs {
+  grid-area: Fs;
+}
+
+#Gs {
+  grid-area: Gs;
+}
+
+#As {
+  grid-area: As;
+}
+
+#Cs1 {
+  grid-area: Cs1;
+}
+
+#Ds1 {
+  grid-area: Ds1;
+}
+
+#Fs1 {
+  grid-area: Fs1;
+}
+
+.synthTranspositionControls,
+.synthOscillatorControls {
+  display: flex;
+  gap: 20px;
+  justify-content: space-evenly;
+}
+
+#toggleMidiMenu, 
+.controlButtons {
+  display: flex;
+  cursor: pointer;
+  border-radius: 20px;
+  border: none;
+  font-size: 25px;
+  color: var(--text-color);
+  background: var(--color-base-brighter);
+  /* box-sizing: content-box; */
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.3),
+    -8px -8px 8px rgba(255, 255, 255, 0.7);
+  transition: background-color 0.3s;
+  z-index: 1;
+  transition: all 0.1s;
+}
+#toggleMidiMenu{
+  background: orange;
+  box-shadow: 0px 0px 20px orange,
+  inset 0px 0px 20px orange;
+}
+
+.oscType.number{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.oscType.random{
+  height: 50px;
+  width: 80px;
+}
+
+
+.oscType.on,
+.effectButton.active,
+#onOffButton.on {
+  transform: scale(0.99); /* ingrandisce il bottone dell'10% */
+  color: var(--color-leds);
+  text-shadow: 0 0 10px var(--color-leds);
+  transform: translateY(0.5px);
+}
+
+.controlButtons:active {
+  background: var(--color-base);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3),
+  -4px -4px 8px rgba(255, 255, 255, 0.7);;
+  /* transform: translateY(2px); */
+  transform: scale3d(0.99, 0.99, 1);
+}
+
+.transpose {
+  height: 50px;
+  width: 50px;
+  font-size: 30px;
+  border-radius: 50%;
+}
+
+/* .transpose:active {
+  background: var(--color-base);
+  transform: translateY(2px);
+} */
+
+#onOffButton{
+  position: absolute;
+  right: 5%;
+  width: 75px;
+}
+
+/* SLIDERS */
+
+.sliderContainer {
+  width: 85%;
+  height: 90%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sliderInnerContainer {
+  display: flex;
+  width: 444px;
+  height: 100%;
+}
+
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 400px;
+  height: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(173, 176, 183, 0.9) 40%,
+    rgba(104, 106, 111, 0.7) 60%
+  );
+  outline: none;
+  opacity: 0.8;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-sizing: content-box;
+  box-shadow: inset 2px 2px 2px rgb(50, 50, 50);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  border-radius: 12.5px;
+  background: linear-gradient(
+    120deg,
+    rgba(20, 20, 20, 1) 70.52%,
+    rgba(0, 0, 0, 1) 96.3%
+  );
+  box-sizing: content-box;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.3),
+    inset 2px 2px 2px rgba(255, 255, 255, 0.2),
+    -8px -8px 8px rgba(255, 255, 255, 0.7);
+}
+
+/* .slider::-webkit-slider-thumb:hover {
+  opacity: 0.8;
+}
+
+.slider::-webkit-slider-thumb:active {
+  opacity: 1;
+} */
+
+#oct,
+#typeOsc{
+  font-size: 30px;
+}
+
+.effectButton {
+  height: 40%;
+  width: 30%;
+  font-size: 30px;
+}
+
+#midiQuantGrid {
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "prevMode mode nextMode" "prevKey key nextKey";
+}
+
+#modeScreen {
+  grid-area: mode;
+}
+
+#keyScreen {
+  grid-area: key;
+}
+
+.carouselContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  perspective: 250px;
+}
+
+.carousel {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+/* #carouselModeContainer{top: 20%;}
+
+#modeCarousel {top: -15%;} */
+.slide {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: var(--carousel-fontSize);
+  text-align: center;
+  color: transparent;
+  z-index: -1;
+  transition: all 0.3s;
+}
+
+.first {
+  color: var(--color-leds-screen);
+  text-shadow: 0px 0px 10px var(--color-leds-screen);
+}
+.second {
+  color: var(--color-leds-screen-transparent);
+  text-shadow: 0px 0px 10px var(--color-leds-screen);
+}
+.third {
+  color: transparent;
+  text-shadow: 0px 0px 8px var(--color-leds-screen-moreTransparent);
+}
+
+.darkened{
+  color: var(--color-leds-screen-moreTransparent);
+  text-shadow: none;
+}
+
+#nextModeContainer {
+  grid-area: nextMode;
+}
+
+#prevModeContainer {
+  grid-area: prevMode;
+}
+
+#nextKeyContainer {
+  grid-area: nextKey;
+}
+
+#prevKeyContainer {
+  grid-area: prevKey;
+}
+
+.nextPrev_button {
+  width: 60%;
+  height: 25%;
+}
+
+/* .nextPrev_button:active {
+  border-color: rgb(119, 151, 245);
+} */
+
+
+/* .slider {
+  transform: rotate(90deg);
+} */
