@@ -3,7 +3,7 @@ const intervalBetweenNotes = 70; // Set the interval in milliseconds
 const intervalBetweenDiffNotes = 45;
 let previousBallNote = null; // Variable to store the previous ball
 
-let previousInputDevice = null; // Variable to store the previous MIDI device
+let selectedInputDevice = null;
 
 // number from 1 to 7
 mode = 5;
@@ -22,108 +22,123 @@ if (navigator.requestMIDIAccess) {
 function onMIDISuccess(midiAccess) {
   // Get a list of available MIDI input devices
   const inputs = midiAccess.inputs.values();
-  const inputDevices = Array.from(inputs); // Convert iterator to array
+  let inputDevices = [];
+  if (inputs) {
+    inputDevices = Array.from(inputs);
+  }
+  inputDevices.unshift(null); // Add null at the beginning of the array
 
-  if (inputDevices.length > 0) {
-    const selectInput = document.getElementById("midiSelectInput");
-
-    // Create options for MIDI input devices
-    inputDevices.forEach((device, index) => {
-      const option = document.createElement("option");
-      option.value = index;
-      if (index == 0) {
-        option.selected = true;
-      }
-      option.text = device.name;
-      selectInput.appendChild(option);
-    });
-
-    var selectedInputDevice = inputDevices[0];
-
-    handleSelectedInputDevice(selectedInputDevice);
-
-    // Handle device selection
-    selectInput.addEventListener("change", function (event) {
-      selectedInputDevice = inputDevices[event.target.value];
-      handleSelectedInputDevice(selectedInputDevice);
-    });
-  } else {
+  if (inputDevices.length === 1) {
     console.log("No MIDI input devices found.");
   }
 
+  var selectedInputDevice = inputDevices[0];
+
+  handleSelectedInputDevice(selectedInputDevice);
+
+  const selectInput = document.getElementById("midiSelectInput");
+
+  // Create options for MIDI input devices
+  inputDevices.forEach((device, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    if (index == 0) {
+      option.selected = true;
+    }
+    if (device) {
+      option.text = device.name;
+    } else {
+      option.text = "None";
+    }
+    selectInput.appendChild(option);
+  });
+
+  // Handle device selection
+  selectInput.addEventListener("change", function (event) {
+    selectedInputDevice = inputDevices[event.target.value];
+    handleSelectedInputDevice(selectedInputDevice);
+  });
+
   // Get a list of available MIDI output devices
   const outputs = midiAccess.outputs.values();
-  const outputDevices = Array.from(outputs); // Convert iterator to array
+  let outputDevices = [];
+  if (outputs) {
+    outputDevices = Array.from(outputs);
+  }
+  outputDevices.unshift(null); // Add null at the beginning of the array
 
-  if (outputDevices.length > 0) {
-    const selectOutput = document.getElementById("midiSelectOutput");
+  if (outputDevices.length === 1) {
+    console.log("No MIDI output devices found.");
+  }
 
-    // Create options for MIDI output devices
-    outputDevices.forEach((device, index) => {
-      const option = document.createElement("option");
-      option.value = index;
-      if (index == 1) {
-        option.selected = true;
-      }
+  var selectedOutputDevice = outputDevices[0];
+
+  handleSelectedOutputDevice(selectedOutputDevice);
+
+  const selectOutput = document.getElementById("midiSelectOutput");
+
+  // Create options for MIDI output devices
+  outputDevices.forEach((device, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    if (index == 0) {
+      option.selected = true;
+    }
+    if (device) {
       option.text = device.name;
-      selectOutput.appendChild(option);
-    });
+    } else {
+      option.text = "None";
+    }
+    selectOutput.appendChild(option);
+  });
 
-    var selectedOutputDevice = outputDevices[1];
-
+  // Handle device selection
+  selectOutput.addEventListener("change", function (event) {
+    selectedOutputDevice = outputDevices[event.target.value];
     handleSelectedOutputDevice(selectedOutputDevice);
+  });
 
-    // Handle device selection
-    selectOutput.addEventListener("change", function (event) {
-      selectedOutputDevice = outputDevices[event.target.value];
-      handleSelectedOutputDevice(selectedOutputDevice);
-    });
-
-    document.addEventListener("collision", (event) => {
-      const currentTime = Date.now();
-      const deltaTime = currentTime - lastSentTime;
-      if (
-        deltaTime > intervalBetweenNotes ||
-        (deltaTime < intervalBetweenNotes &&
-          event.detail.note != previousBallNote &&
-          deltaTime > intervalBetweenDiffNotes)
-      ) {
+  document.addEventListener("collision", (event) => {
+    const currentTime = Date.now();
+    const deltaTime = currentTime - lastSentTime;
+    if (
+      deltaTime > intervalBetweenNotes ||
+      (deltaTime < intervalBetweenNotes &&
+        event.detail.note != previousBallNote &&
+        deltaTime > intervalBetweenDiffNotes)
+    ) {
+      if (selectedOutputDevice) {
         sendMidiNote(
           selectedOutputDevice,
           event.detail.note,
           event.detail.velocity
         );
-        generateSound(event.detail.note, event.detail.velocity);
-        lastSentTime = currentTime;
-        previousBallNote = event.detail.note;
       }
-    });
-  } else {
-    console.log("No MIDI output devices found.");
-  }
+      generateSound(event.detail.note, event.detail.velocity);
+      lastSentTime = currentTime;
+      previousBallNote = event.detail.note;
+    }
+  });
 }
 
 // Function to handle the selected MIDI input device
 function handleSelectedInputDevice(selectedDevice) {
-  console.log("Selected MIDI Input Device:", selectedDevice.name);
-  // Listen for MIDI messages from the selected device
-  selectInputDevice(selectedDevice);
-}
-
-// Function to handle the selected MIDI output device
-function handleSelectedOutputDevice(selectedDevice) {
-  console.log("Selected MIDI Output Device:", selectedDevice.name);
-}
-
-// When selecting a new MIDI device
-function selectInputDevice(newDevice) {
-  // Remove the listener from the previous MIDI device, if present
-  if (previousInputDevice) {
-    previousInputDevice.onmidimessage = null;
+  if (!selectedDevice) {
+    if (selectedInputDevice)
+      // Remove the listener from the previous MIDI device, if present
+      selectedInputDevice.onmidimessage = null;
+    console.log("No MIDI input device selected.");
+    return;
+  }
+  if (selectedInputDevice) {
+    // Remove the listener from the previous MIDI device, if present
+    selectedInputDevice.onmidimessage = null;
   }
 
+  console.log("Selected MIDI Input Device:", selectedDevice.name);
+
   // Assign the new MIDI device
-  selectedInputDevice = newDevice;
+  selectedInputDevice = selectedDevice;
 
   // Listen for MIDI messages from the selected device
   selectedInputDevice.onmidimessage = function (message) {
@@ -144,9 +159,15 @@ function selectInputDevice(newDevice) {
       toggleActiveNoteButton(message.data[1]);
     }
   };
+}
 
-  // Set the current device as the previous device
-  previousInputDevice = selectedInputDevice;
+// Function to handle the selected MIDI output device
+function handleSelectedOutputDevice(selectedDevice) {
+  if (!selectedDevice) {
+    console.log("No MIDI output device selected.");
+    return;
+  }
+  console.log("Selected MIDI Output Device:", selectedDevice.name);
 }
 
 function onMIDIFailure() {
@@ -233,8 +254,6 @@ octaveDownButton.addEventListener("click", () => {
     octaveTranspose = -3;
   }
 });
-
-
 
 const keysButtons = document.querySelectorAll(".notes-block button");
 keysButtons.forEach((keysButtons) => {
