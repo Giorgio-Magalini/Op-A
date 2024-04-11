@@ -444,15 +444,23 @@
 
   <script>
 
-    const oldMinDimension = Math.min(1440, 821);
-    const newMinDimension = Math.min(window.innerWidth, window.innerHeight);
+    function resize() {
 
-    const ratio = newMinDimension / oldMinDimension;
+      if (window.innerWidth / window.innerHeight > 1440 / 821) {
+        var ratio = window.innerHeight / 821;
+      } else {
+        var ratio =  window.innerWidth / 1440;
+      }
 
-    const originalZoom = 67;
-    const newZoom = originalZoom * ratio;
-    
-    document.body.style.zoom = newZoom + "%";
+      const originalZoom = 67;
+      const newZoom = originalZoom * ratio;
+      
+      document.body.style.zoom = newZoom + "%";
+    }
+
+    resize();
+
+    window.addEventListener('resize', resize);
   </script>
 
   <script src="libraries/p5.min.js"></script>
