@@ -53,6 +53,9 @@ function setupKnobs() {
       variableName = knob.id;
 
     knob.addEventListener("mousedown", handleMouseDown);
+    knob.addEventListener("touchstart", handleTouchStart);
+    knob.addEventListener("touchmove", handleTouchMove, { passive: true });
+    knob.addEventListener("touchend", handleTouchEnd);
     knob.addEventListener("dblclick", initializeKnob);
     knob.addEventListener("wheel", handleWheel, { passive: true });
 
@@ -83,6 +86,27 @@ function setupKnobs() {
       xAtClick = event.clientX;
       angleValue = getKnobDeltaY(event.clientY, knob);
       updateKnob(angleValue, knob);
+    }
+
+    function handleTouchStart(event) {
+      isDragging = true;
+      knob.classList.add("active");
+      yAtTouchStart = event.touches[0].clientY;
+      angleValue = getKnobDeltaY(event.touches[0].clientY, knob);
+      updateKnob(angleValue, knob);
+    }
+
+    function handleTouchMove(event) {
+      if (isDragging) {
+        angleValue = getKnobDeltaY(event.touches[0].clientY, knob);
+        updateKnob(angleValue, knob);
+      }
+    }
+
+    function handleTouchEnd() {
+      isDragging = false;
+      knob.classList.remove("active");
+      angleAtTouchEnd = angleValue;
     }
 
     function handleWheel(event) {
@@ -148,7 +172,7 @@ function setupKnobs() {
       const deltaY = mouseY - yAtClick;
       // const deltaX = xAtClick - knobCenterX;
       // let angle = deltaX >= 0 ? deltaY : -deltaY;
-      let angle = deltaY;
+      let angle = - deltaY;
       return limitAngle(angle + angleAtMouseUp);
     }
 

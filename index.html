@@ -445,7 +445,6 @@
   <script>
 
     function resize() {
-
       if (window.innerWidth / window.innerHeight > 1440 / 821) {
         var ratio = window.innerHeight / 821;
       } else {
@@ -454,8 +453,11 @@
 
       const originalZoom = 67;
       const newZoom = originalZoom * ratio;
+
+      document.body.style.width = "100%"
       
       document.body.style.zoom = newZoom + "%";
+      
     }
 
     resize();
