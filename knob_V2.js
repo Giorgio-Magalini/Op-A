@@ -91,6 +91,7 @@ function setupKnobs() {
     function handleTouchStart(event) {
       isDragging = true;
       knob.classList.add("active");
+      yAtClick = event.touches[0].clientY;
       angleValue = getKnobDeltaY(event.touches[0].clientY, knob);
       updateKnob(angleValue, knob);
     }
