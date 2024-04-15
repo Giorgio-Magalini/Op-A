@@ -1,30 +1,29 @@
 function startAudioContext() {
-
-  const audioContext = new (AudioContext || webkitAudioContext)();
+  const audioContext = new (webkitAudioContext)();
 
   Tone.setContext(audioContext);
 
   Tone.start();
 }
 
-window.onload = function() {
+window.onload = function () {
   const modal = document.getElementById("myModal");
   modal.style.display = "block";
 };
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   let toneLoaded = false;
 
   function loadTone(event) {
     if (!toneLoaded) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/tone'; 
-      // script.src = 'libraries/tone.js'; 
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/tone";
+      // script.src = 'libraries/tone.js';
       script.onload = initializeTone;
       document.head.appendChild(script);
 
       document.getElementById("myModal").style.display = "none";
-      
+
       toneLoaded = true;
 
       event.target.removeEventListener(event.type, event.callee);
@@ -35,15 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener("touchstart", loadTone);
 });
 
-
-
 function initializeTone() {
   startAudioContext();
   initToneSynth();
   initEffects();
   setConnections();
 }
-
 
 var reverb = 0.5;
 var delay = 0.5;
@@ -135,14 +131,13 @@ const effects = {
   },
 };
 
-
-function initEffects () {
+function initEffects() {
   effects["reverb"].effect = new Tone.Reverb({
     decay: 5,
     preDelay: 0,
     wet: 1,
   });
-  
+
   effects["delay"].effect = new Tone.FeedbackDelay({
     delayTime: 0.7,
     feedback: 0.5,
@@ -163,19 +158,16 @@ function initEffects () {
     wet: 1,
   }).start();
 
-
   for (const effectKey in effects) {
     if (effects.hasOwnProperty(effectKey)) {
       const effect = effects[effectKey];
       effect.output = new Tone.Gain();
     }
   }
-  
 
   configureEffectSliders(0, 1);
 
   initEffectButtons();
-
 }
 
 // function to scale a value from one range to another
@@ -185,7 +177,6 @@ function scaleValue(value, oldMin, oldMax, newMin, newMax) {
   var scaledValue = ((value - oldMin) * newValueRange) / oldValueRange + newMin;
   return scaledValue;
 }
-
 
 function configureEffectSliders(min, max) {
   document.querySelectorAll(".slider").forEach((slider) => {
@@ -215,13 +206,12 @@ function initEffectButtons() {
   });
 }
 
-
-function initToneSynth(){
+function initToneSynth() {
   polySynth = new Tone.PolySynth();
   polySynth.set({
     maxPolyphony: 20,
   });
-  if(synthType.settings){
+  if (synthType.settings) {
     setSynthSettings(synthType.settings);
   }
 }
@@ -236,7 +226,6 @@ function setConnections() {
     effect.effect.connect(effect.output);
   });
 }
-
 
 function setSynthEnvelope(envelope) {
   polySynth.set({
