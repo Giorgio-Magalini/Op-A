@@ -292,6 +292,7 @@ function generateSound(note, velocity) {
   if (velocity > 0) {
     polySynth.triggerAttack(note, Tone.now(), velocity);
   }
+  // if (Tone) document.getElementById("note").textContent = "ok Tone";
 }
 
 function activateEffect(effect) {

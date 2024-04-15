@@ -25,13 +25,6 @@ if (navigator.requestMIDIAccess) {
         event.detail.note != previousBallNote &&
         deltaTime > intervalBetweenDiffNotes)
     ) {
-      if (selectedOutputDevice) {
-        sendMidiNote(
-          selectedOutputDevice,
-          event.detail.note,
-          event.detail.velocity
-        );
-      }
       generateSound(event.detail.note, event.detail.velocity);
       lastSentTime = currentTime;
       previousBallNote = event.detail.note;
