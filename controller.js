@@ -16,6 +16,27 @@ if (navigator.requestMIDIAccess) {
   navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 } else {
   console.log("Web MIDI not supported");
+  document.addEventListener("collision", (event) => {
+    const currentTime = Date.now();
+    const deltaTime = currentTime - lastSentTime;
+    if (
+      deltaTime > intervalBetweenNotes ||
+      (deltaTime < intervalBetweenNotes &&
+        event.detail.note != previousBallNote &&
+        deltaTime > intervalBetweenDiffNotes)
+    ) {
+      if (selectedOutputDevice) {
+        sendMidiNote(
+          selectedOutputDevice,
+          event.detail.note,
+          event.detail.velocity
+        );
+      }
+      generateSound(event.detail.note, event.detail.velocity);
+      lastSentTime = currentTime;
+      previousBallNote = event.detail.note;
+    }
+  });
 }
 
 // Function called when MIDI access is granted
