@@ -89,16 +89,13 @@ function setupKnobs() {
     }
 
     function handleTouchStart(event) {
-      event.preventDefault();
       isDragging = true;
       knob.classList.add("active");
-      yAtTouchStart = event.touches[0].clientY;
       angleValue = getKnobDeltaY(event.touches[0].clientY, knob);
       updateKnob(angleValue, knob);
     }
 
     function handleTouchMove(event) {
-      event.preventDefault();
       if (isDragging) {
         angleValue = getKnobDeltaY(event.touches[0].clientY, knob);
         updateKnob(angleValue, knob);
@@ -108,7 +105,7 @@ function setupKnobs() {
     function handleTouchEnd() {
       isDragging = false;
       knob.classList.remove("active");
-      angleAtTouchEnd = angleValue;
+      angleAtMouseUp = angleValue;
     }
 
     function handleWheel(event) {
