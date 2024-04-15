@@ -1,6 +1,6 @@
 function startAudioContext() {
 
-  const audioContext = new (AudioContext || webkitAudioContext)();
+  const audioContext = new AudioContext();
 
   Tone.setContext(audioContext);
 
