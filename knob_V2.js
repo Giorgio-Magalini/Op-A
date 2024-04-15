@@ -97,6 +97,7 @@ function setupKnobs() {
     }
 
     function handleTouchMove(event) {
+      event.preventDefault();
       if (isDragging) {
         angleValue = getKnobDeltaY(event.touches[0].clientY, knob);
         updateKnob(angleValue, knob);
