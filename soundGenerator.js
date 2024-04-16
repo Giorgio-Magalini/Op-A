@@ -187,7 +187,7 @@ function configureEffectSliders(min, max) {
 }
 
 function initEffectButtons() {
-  
+
   Object.values(effects).forEach(function (effect) {
     var effectButton = document.getElementById(effect.id);
 
@@ -222,7 +222,7 @@ function setConnections() {
   compressor.attack = 0;
   limiter = new Tone.Limiter(-12);
   outGain = new Tone.Gain();
-  outGain.gain.value = 1.5;
+  outGain.gain.value = 1;
 
   effectBus.connect(compressor);
   polySynth.connect(compressor);
