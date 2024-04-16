@@ -30,7 +30,6 @@
   justify-content: center;
   align-items: center;
   justify-items: center;
-  
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -65,7 +64,7 @@ body {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   top: 0;
   width: 100%;
