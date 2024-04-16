@@ -7,17 +7,12 @@
     <title>Op-A</title>
 
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="stylesheet" type="text/css" href="knob_V2.css" />
-    
   </head>
 
   <body>
-
-    <!-- <div id="note"></div> -->
-
     <div id="myModal" class="modal">
       <div class="modal-content">
-        <h2>Click Anywhere to Start</h2>
+        <h2>click anywhere to start</h2>
       </div>
     </div>
 
@@ -46,7 +41,8 @@
         </p> -->
 
       <div class="credits">
-        <p>ACTAM Project, MAE, Politecnico di Milano, A.Y. 2023-2024.</p>
+        <p>Inspired by: Teenage Engineering Op-1™ "tombola" sequencer.</p>
+        <p>ACTAM Project, M.A.E., Politecnico di Milano, A.Y. 2023-2024.</p>
         <p>
           Github repository:
           <a
@@ -278,7 +274,7 @@
             <div class="innerBlock" id="lowerblock">
               <div class="keyboard-block">
                 <div class="synthControls">
-                  <div class="synthTranspositionControls" style="width: 26%;">
+                  <div class="synthTranspositionControls" style="width: 26%">
                     <p id="oct">transpose</p>
                     <button class="controlButtons transpose" id="octaveDown">
                       -
@@ -288,7 +284,7 @@
                     </button>
                   </div>
 
-                  <div class="synthOscillatorControls" style="width: 56%;">
+                  <div class="synthOscillatorControls" style="width: 56%">
                     <p id="typeOsc">osc type</p>
                     <button class="controlButtons oscType number" id="0">
                       1
@@ -377,30 +373,28 @@
   </body>
 
   <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
   </script>
 
   <script>
-
     function resize() {
       if (window.innerWidth / window.innerHeight > 1440 / 821) {
         var ratio = window.innerHeight / 821;
       } else {
-        var ratio =  window.innerWidth / 1440;
+        var ratio = window.innerWidth / 1440;
       }
 
       const originalZoom = 67;
       const newZoom = originalZoom * ratio;
 
-      document.body.style.width = "100%"
-      
+      document.body.style.width = "100%";
+
       document.body.style.zoom = newZoom + "%";
-      
     }
 
     resize();
 
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
   </script>
 
   <script src="libraries/jquery/3.6.0/jquery.min.js"></script>
@@ -409,11 +403,7 @@
 
   <script src="libraries/matter.js"></script>
 
-  <script
-    language="javascript"
-    type="text/javascript"
-    src="knob.js"
-  ></script>
+  <script language="javascript" type="text/javascript" src="knob.js"></script>
 
   <script
     language="javascript"
