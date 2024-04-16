@@ -53,9 +53,9 @@ function setupKnobs() {
       variableName = knob.id;
 
     knob.addEventListener("mousedown", handleMouseDown);
-    knob.addEventListener("touchstart", handleTouchStart);
+    knob.addEventListener("touchstart", handleTouchStart, { passive: true });
     knob.addEventListener("touchmove", handleTouchMove, { passive: true });
-    knob.addEventListener("touchend", handleTouchEnd);
+    knob.addEventListener("touchend", handleTouchEnd, { passive: true });
     knob.addEventListener("dblclick", initializeKnob);
     knob.addEventListener("wheel", handleWheel, { passive: true });
 

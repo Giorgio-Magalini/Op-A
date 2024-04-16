@@ -129,26 +129,6 @@ function generateBallFromMidiNote(note, x = width / 2, y = height / 2) {
   balls.push(new Ball(x, y, ballRadius, note, ballsMaxVelocity, ballMass));
 }
 
-// // function to generate a random position in a circle
-// function randomPositionInCircle(r) {
-//   let x = random(-r, r);
-//   let y = random(-r, r);
-//   while (x * x + y * y > r * r) {
-//     x = random(-r, r);
-//     y = random(-r, r);
-//   }
-//   return [x + width / 2, y + height / 2];
-// }
-
-// function checkBallsPosition(x, y) {
-//   for (let i = 0; i < balls.length; i++) {
-//     if (ball[i].x + 2 * ball[i].r > x && ball[i].x - 2 * ball[i].r < x && ball[i].y + 2 * ball[i].r > y && ball[i].y - 2 * ball[i].r < y) {
-//       return true;
-//     }
-//   }
-//   return false;
-// }
-
 function draw() {
   background(0);
 
@@ -179,9 +159,6 @@ function draw() {
     exagon.open(opAmodel.tombola.aperture.value - apertureDiff);
     apertureDiff = opAmodel.tombola.aperture.value;
   }
-
-  // to check if the balls get removed from the world
-  // console.log(balls.length + " " + world.bodies.length);
 
   var text = "";
 
