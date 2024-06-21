@@ -8,7 +8,7 @@ function sendMidiNote(selectedDevice, note, velocity) {
     note = convertNoteStringToMidiNoteValue(note);
   }
 
-  velocity = limitVelocity(velocity);
+  velocity = velocityExpander(velocity, 5);
 
   console.log("Sending MIDI note:", note, "with velocity:", velocity);
 
@@ -49,6 +49,10 @@ function limitVelocity(velocity) {
   } else {
     return velocity;
   }
+}
+
+function velocityExpander(velocity, expansionFactor){
+  return limitVelocity(Math.floor(velocity * expansionFactor));
 }
 
 
