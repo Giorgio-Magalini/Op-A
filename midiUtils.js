@@ -12,11 +12,11 @@ function sendMidiNote(selectedDevice, note, velocity) {
 
   console.log("Sending MIDI note:", note, "with velocity:", velocity);
 
-  //selectedDevice.send([0x90, note, velocity]);
+  selectedDevice.send([0x90, note, velocity]);
 //   send midi note off after 0.1 seconds
-    // setTimeout(function () {
-    // selectedDevice.send([0x80, note, velocity]);
-    // }, 100);
+    setTimeout(function () {
+    selectedDevice.send([0x80, note, velocity]);
+    }, 100);
 
 }
 
