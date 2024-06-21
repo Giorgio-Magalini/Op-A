@@ -25,7 +25,9 @@ Op-A has been tested on Chrome version 123.0.6312.106 (Official Build) (64-bit) 
 
 ## Getting Started
 
-To get started with Op-A, simply clone the repository and open the index.html file in your preferred web browser. Connect an external MIDI controller for optimal functionality, or use the keyboard controls provided within the application to begin exploring the different features.
+To get started with Op-A, simply clone the repository and open the index.html file in your preferred web browser. Connect an external MIDI controller for optimal functionality, or use the keyboard controls provided within the application to begin exploring the different features. 
+
+[Try It!!](https://giorgio-magalini.github.io/Op-A/)
 
 ## Credits
 
