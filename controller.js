@@ -207,7 +207,7 @@ document.querySelectorAll(".notes-block button").forEach((notesButtons) => {
 });
 
 function isInKeyboardRange(note) {
-  C = 12 * (6 + octaveTranspose);
+  C = 12 * (5 + octaveTranspose);
   G1 = C + 19;
   return note >= C && note <= G1;
 }

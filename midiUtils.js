@@ -21,7 +21,7 @@ function sendMidiNote(selectedDevice, note, velocity) {
 function convertNoteStringToMidiNoteValue(noteString) {
   const note = noteString.slice(0, -1);
   const octave = noteString.slice(-1);
-  return 12 * 2 + 12 * octave + noteStringToValue[note];
+  return 12 * (octave + 1) + noteStringToValue[note];
 }
 
 const noteStringToValue = {
@@ -51,7 +51,7 @@ function limitVelocity(velocity) {
 
 
 function convertMidiNoteValueToNoteString(midiNoteValue) {
-  const octave = Math.floor(midiNoteValue / 12) - 2;
+  const octave = Math.floor(midiNoteValue / 12) - 1;
   const note = midiNoteValue % 12;
   return noteValueToString[note] + octave;
 }
@@ -150,7 +150,7 @@ const noteStringToValueSharp = {
 
 
 function convertKeyValueToNoteValue(keyValue, octaveTranspose){
-  return 12 * 6 + octaveTranspose * 12 + noteStringToValueSharp[keyValue] ;
+  return 12 * 5 + octaveTranspose * 12 + noteStringToValueSharp[keyValue] ;
 }
 
 const noteValueToStringSharp = {
@@ -177,6 +177,6 @@ const noteValueToStringSharp = {
 };
 
 function convertMidiNoteValueToNoteStringSharp(midiNoteValue, octaveTranspose) {
-  const note = midiNoteValue - 12 * (6 + octaveTranspose);
+  const note = midiNoteValue - 12 * (5 + octaveTranspose);
   return noteValueToStringSharp[note];
 }
