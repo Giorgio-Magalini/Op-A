@@ -7,10 +7,8 @@ function sendMidiNote(selectedDevice, note, velocity) {
   if (typeof note === "string") {
     note = convertNoteStringToMidiNoteValue(note);
   }
-
+  
   velocity = velocityExpander(velocity, 5);
-
-  console.log("Sending MIDI note:", note, "with velocity:", velocity);
 
   selectedDevice.send([0x90, note, velocity]);
 //   send midi note off after 0.1 seconds
