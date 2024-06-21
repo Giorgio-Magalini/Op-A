@@ -2,6 +2,9 @@
 
 Op-A is a web application designed to provide an immersive and interactive experience with sound and visuals. Developed by a group of students from Politecnico di Milano as a project for Advanced Coding Tools And Methodologies, Op-A utilizes MIDI signals to generate sound and control visual elements on screen.
 
+
+[TRY ME](https://giorgio-magalini.github.io/Op-A/)
+
 ## Overview
 
 Op-A is structured into three distinct sections:
@@ -22,12 +25,6 @@ Op-A is structured into three distinct sections:
 ## Compatibility
 
 Op-A has been tested on Chrome version 123.0.6312.106 (Official Build) (64-bit) for CSS compatibility.
-
-## Getting Started
-
-To get started with Op-A, simply clone the repository and open the index.html file in your preferred web browser. Connect an external MIDI controller for optimal functionality, or use the keyboard controls provided within the application to begin exploring the different features. 
-
-[TRY ME](https://giorgio-magalini.github.io/Op-A/)
 
 ## Credits
 
