@@ -47,6 +47,8 @@ var chorus = 0.5;
 
 var quantizeMidis = false;
 
+var muteOPA = false;
+
 const percussiveSynthEnvelope = {
   attack: 0.005,
   decay: 0.1,
@@ -289,7 +291,7 @@ function generateSound(note, velocity) {
   if (synthType == "random2") {
     setRandomSynthSettings(false);
   }
-  if (velocity > 0) {
+  if (velocity > 0 && muteOPA == false) {
     polySynth.triggerAttack(note, Tone.now(), velocity);
   }
 }

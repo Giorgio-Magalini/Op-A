@@ -340,3 +340,16 @@ document.getElementById("onOffButton").addEventListener("click", function () {
     darkenSlides();
   }
 });
+
+document.getElementById("muteOPA").classList.add("on");
+
+document.getElementById("muteOPA").addEventListener("click", function () {
+  this.classList.toggle("on");
+  if (this.classList.contains("on")) {
+    muteOPA = false;
+    this.textContent = "mute OP-A";
+  } else {
+    muteOPA = true;
+    this.textContent = "unmute OP-A";
+  }
+});
