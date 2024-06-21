@@ -10,18 +10,20 @@ function sendMidiNote(selectedDevice, note, velocity) {
 
   velocity = limitVelocity(velocity);
 
-  selectedDevice.send([0x90, note, velocity]);
+  console.log("Sending MIDI note:", note, "with velocity:", velocity);
+
+  //selectedDevice.send([0x90, note, velocity]);
 //   send midi note off after 0.1 seconds
-    setTimeout(function () {
-    selectedDevice.send([0x80, note, velocity]);
-    }, 100);
+    // setTimeout(function () {
+    // selectedDevice.send([0x80, note, velocity]);
+    // }, 100);
 
 }
 
 function convertNoteStringToMidiNoteValue(noteString) {
   const note = noteString.slice(0, -1);
   const octave = noteString.slice(-1);
-  return 12 * (octave + 1) + noteStringToValue[note];
+  return 12 * (parseInt(octave) + 1) + noteStringToValue[note];
 }
 
 const noteStringToValue = {
