@@ -4,7 +4,9 @@ Op-A is a web application designed to provide an immersive and interactive exper
 It exploit the randomness of the unpredictable movements of physical bodies to generate MIDI signals.
 Op-A in simple words can be considered an arpeggiator, inspired by the "tombola" function of the OP-1 synthesizer, which, just like the OP-1 makes it possible for the user to create unpredictable and evolving musical sequences adding an element of surprise and creativity to its musical explorations. 
 
-[TRY ME](https://giorgio-magalini.github.io/Op-A/)
+## Getting Started
+
+To get started with Op-A, clone the repository and open the index.html file in your preferred web browser (or simply click this [LINK](https://giorgio-magalini.github.io/Op-A/)). Connect an external MIDI controller for optimal functionality, or use the mouse controls provided within the application to begin exploring the different features.
 
 ## Overview
 
@@ -50,9 +52,7 @@ Instead, the effects stack include reverb, distortion, chorus, and flanger and b
 
 Op-A has been tested on Chrome version 123.0.6312.106 (Official Build) (64-bit) for CSS compatibility.
 
-## Getting Started
 
-To get started with Op-A, clone the repository and open the index.html file in your preferred web browser (or simply click this [link](https://giorgio-magalini.github.io/Op-A/)). Connect an external MIDI controller for optimal functionality, or use the mouse controls provided within the application to begin exploring the different features.
 
 ## Credits
 
