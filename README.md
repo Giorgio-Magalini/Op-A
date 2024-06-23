@@ -8,8 +8,10 @@ Op-A in simple words can be considered an arpeggiator, inspired by the "tombola"
 
 ## Overview
 
-![signalFLow](https://github.com/Giorgio-Magalini/Op-A/assets/83732019/50f8b671-4062-40fc-89c9-951aa9854128)
 
+<p align="center">
+<img src="https://github.com/Giorgio-Magalini/Op-A/blob/main/img/signalFLow.jpg" width="550" heigth="auto">
+</p>
 Op-A is structured into three distinct sections:
 
 ### MIDI Transformer
