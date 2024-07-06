@@ -9,7 +9,8 @@ Op-A in simple words can be considered an arpeggiator, inspired by the "tombola"
 To get started with Op-A, clone the repository and open the index.html file in your preferred web browser (or simply click this [LINK](https://giorgio-magalini.github.io/Op-A/)). Connect an external MIDI controller for optimal functionality, or use the mouse controls provided within the application to begin exploring the different features.
 
 ## Video Tutorial
-https://github.com/Giorgio-Magalini/Op-A/assets/83732019/8ad2a532-12bf-4ea7-bb12-1c5ea3d88bcb
+https://github.com/Giorgio-Magalini/Op-A/assets/83732019/2f7b3579-4951-4553-9de2-bbef2bedea3d
+
 
 ## Overview
 
