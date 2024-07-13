@@ -23,18 +23,25 @@ Op-A is structured into three distinct sections:
 ### MIDI Transformer
 It's the section which is responsible for bringing input MIDI messages generated thorugh an external keyboard (or playing the virtual keyboard with the mouse) to the arpeggiator. Thanks to the features developed in this section, playing Op-A beacomes enjoyable to play also for users without deep musical-theory knowledge. In fact swiching on the button near the text "Midi transform" it will become possible for the user to set the key and the mode (of that key) that he wants to follow during its performance. Setting a specific key (or a mode) makes some notes on the keyboard "right" and others "wrong". All of this is basically just achieved applying shifts on a circular buffer. Let’s see how this works analysing the scenario of the setting of a major key.
 
+<p align="center">
+<img src="https://github.com/Giorgio-Magalini/Op-A/blob/main/img/midi_transform_1.png" width="900" heigth="auto">
+</p>
 
-As you can see in the figure all major scales are characterized by a precise pattern of tones semitones (look at C maj).
-If we associate 1 to C and we make steps of one semitone, the C maj scale can be represented by this array of integer (containing 7 numbers with a value from 1 to 12) → D is 3 because from C to D we have 2 steps (C C# D) etc…
+As you can see in the figure a major scales (like C major) is characterized by a precise pattern of tones and semitones.
+If we associate 1 to C and we make steps of one semitone, the C maj scale can be represented by an array of 7 integers with a value that can go from 1 up to 12 (for example D is 3 because from C to D we have 2 steps: C-C# and C#-D).
 Looking at the D major scale we can observe that to obtain any other major scale is enough to apply the same tones/semitones pattern but starting from a different fundamental note.
-And how does it change its associated array? We can simply take the array associated to C maj and add 2 to all its elements (because from C to D we have 2 semitones) applying a mod 12 on the results. The modulo operation is because of the periodicity of musical notes.
-In fact, C# is 14 but going an octave lower is also 2, and so we decided to keep 12 as the maximum value and move C# at the beginning (applying a circular shift). 
+And how does it change its associated array? We can simply take the array associated to C maj and add 2 to all of its elements (because from C to D we have 2 semitones) applying a mod 12 on the results. The modulo operation is because of the periodicity of musical notes.
+In fact, C# is 14 but going an octave lower is also 2. Since we decided to keep 12 as the maximum value for array's elements, let's move C# at the beginning (applying a circular shift). 
 
 Let’s see now how to use these array in order to build a quantized keyboard.
-If we consider that the user can play all the notes from C to B with including the accidentals, the array of all the possible inputs is an array going from 1 to 12. But we have seen that C maj, it’s characterized by only 7 notes. Let’s extend the array associated to C major in order to have 12 values (replicating the neighbor value where we don’t have half steps in the scale). If we put the array of inputs on X-axis and the extended array of C major on Y – axis we finally obtain a quantized keyboard (for C maj).
-Now for example if I play C# the midi note sent to the next bolck of the program flow will be actually a C and so on for the others notes.
+If we consider that the user can play all the notes from C to B with including the accidentals, the array of all the possible inputs is an array of 12 integers going from 1 up to 12. But we have seen that C maj, it’s characterized by only 7 notes. Let’s extend the array associated to C major in order to have 12 values (replicating the neighbor value where we don’t have half steps in the scale). If we put the array of inputs on X-axis and the extended array of C major on Y – axis we finally obtain a quantized keyboard (for C maj).
+Now for example if I play C# the midi note sent to the next bolck of the program flow will be actually a C because C# doesn't belong to the C major scale.
 
-This working principle can also be combined with the theory of modes of a scale, to impose not only a key but one of its modes too. To conclude, the user, even if he doesn’t know anything about musical theory, will be able to play the third mode of G# major or any other key-mode pair!
+<p align="center">
+<img src="https://github.com/Giorgio-Magalini/Op-A/blob/main/img/midi_transform_2.png" width="900" heigth="auto">
+</p>
+
+This working principle can also be combined with the musical theory of modes of a scale, to impose not only a key but one of its modes too. The final result is that the user, even without knowing anything about musical theory, will be able to play the third mode of G# major or any other key-mode pair!
 
 ### Arpeggiator 
 The Arpeggiator is the central feature of Op-A. It takes as input the MIDI messages generated and processed in the MIDI Transformer section. To be more precise, when an input MIDI message arrives to the arpeggiator, a ball associated to the frequency of that MIDI signal is generated inside a rotating exagon. The whole scene is built in a physical environment (implemented using the library Matter.js) which try to model the physic of the real world. Each ball will be therefore subjected to gravity, friction etc. The user can interfere with the balls movement only using the 3 knobs placed alongside the screen where the exagon is contained:
